@@ -108,4 +108,9 @@ async function startServer() {
   }
 }
 
-startServer();
+// In local/standalone environment, start HTTP listener
+if (!process.env.VERCEL) {
+  startServer();
+}
+
+export default app;

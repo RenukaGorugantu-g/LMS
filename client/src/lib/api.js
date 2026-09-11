@@ -1,4 +1,4 @@
-const API_BASE = '/api';
+const API_BASE = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL) || '/api';
 
 export async function apiRequest(endpoint, options = {}) {
   const token = localStorage.getItem('strata_token');
@@ -18,7 +18,7 @@ export async function apiRequest(endpoint, options = {}) {
   };
 
   if (options.body && options.body instanceof FormData) {
-    delete headers['Content-Type']; // Let browser set multipart boundary
+    delete headers['Content-Type'];
   }
 
   const response = await fetch(`${API_BASE}${endpoint}`, {
@@ -28,7 +28,10 @@ export async function apiRequest(endpoint, options = {}) {
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.error || `Request failed with status ${response.status}`);
+    const message = errorData.error || `Request failed with status ${response.status}`;
+    const error = new Error(message);
+    error.status = response.status;
+    throw error;
   }
 
   return response.json();

@@ -6,7 +6,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DB_FILE_PATH = path.join(__dirname, 'strata_lms.db');
+const DB_FILE_PATH = process.env.VERCEL
+  ? path.join('/tmp', 'strata_lms.db')
+  : path.join(__dirname, 'strata_lms.db');
 
 let dbInstance = null;
 let SQL = null;
@@ -17,6 +19,18 @@ export async function getDatabase() {
   }
 
   SQL = await initSqlJs();
+
+  // If running on Vercel serverless, copy initial seed database to /tmp
+  if (process.env.VERCEL && !fs.existsSync(DB_FILE_PATH)) {
+    const sourceDb = path.join(__dirname, 'strata_lms.db');
+    if (fs.existsSync(sourceDb)) {
+      try {
+        fs.copyFileSync(sourceDb, DB_FILE_PATH);
+      } catch (err) {
+        console.warn('Could not copy db to /tmp on Vercel:', err);
+      }
+    }
+  }
 
   if (fs.existsSync(DB_FILE_PATH)) {
     const fileBuffer = fs.readFileSync(DB_FILE_PATH);
@@ -34,9 +48,13 @@ export async function getDatabase() {
 
 export function saveDatabaseToDisk(db = dbInstance) {
   if (!db) return;
-  const data = db.export();
-  const buffer = Buffer.from(data);
-  fs.writeFileSync(DB_FILE_PATH, buffer);
+  try {
+    const data = db.export();
+    const buffer = Buffer.from(data);
+    fs.writeFileSync(DB_FILE_PATH, buffer);
+  } catch (err) {
+    console.warn('saveDatabaseToDisk note:', err.message);
+  }
 }
 
 /**
