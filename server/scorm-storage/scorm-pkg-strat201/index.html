@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strategic Decision Making &amp; Cognitive Biases</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 24px; color: #0f172a; background: #ffffff; }
+    .header { border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 24px; }
+    .badge { display: inline-block; padding: 4px 10px; background: #fdf2f8; color: #9d174d; border-radius: 9999px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    h1 { font-size: 24px; font-weight: 700; margin: 0 0 8px 0; }
+    p { font-size: 15px; line-height: 1.6; color: #475569; }
+    .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin: 16px 0; }
+    .btn { background: #0f172a; color: #ffffff; border: none; padding: 10px 18px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; }
+    .btn:hover { background: #1e293b; }
+    .status-panel { margin-top: 24px; padding: 12px 16px; border-radius: 6px; font-size: 13px; font-family: monospace; background: #0f172a; color: #f8fafc; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="badge">SCORM 2004 4th Edition SCO</span>
+    <h1>Executive Risk &amp; Scenario Forecasting</h1>
+    <p>Managing asymmetric risk and cognitive heuristics in high-stakes organizational decisions.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0;">Key Heuristics to Mitigate:</h3>
+    <ul>
+      <li><strong>Availability Cascade:</strong> Overweighting recent vivid events during risk modeling.</li>
+      <li><strong>Sunk Cost Fallacy:</strong> Continuing underperforming capital allocations due to historical expenditure.</li>
+      <li><strong>Confirmation Bias:</strong> Selectively curating market intelligence to corroborate hypotheses.</li>
+    </ul>
+    <button class="btn" onclick="complete2004SCO()">Complete Module &amp; Record 2004 Success</button>
+  </div>
+
+  <div class="status-panel" id="scorm2004Log">
+    [SCORM 2004 Runtime Ready] Waiting for user action...
+  </div>
+
+  <script>
+    var api2004 = null;
+    function findAPI2004(win) {
+      var findAttempts = 0;
+      while ((win.API_1484_11 == null) && (win.parent != null) && (win.parent != win)) {
+        findAttempts++;
+        if (findAttempts > 7) return null;
+        win = win.parent;
+      }
+      return win.API_1484_11;
+    }
+
+    function initSCORM2004() {
+      api2004 = findAPI2004(window);
+      var logEl = document.getElementById('scorm2004Log');
+      if (api2004) {
+        var res = api2004.Initialize("");
+        var completion = api2004.GetValue("cmi.completion_status");
+        var success = api2004.GetValue("cmi.success_status");
+        logEl.innerText = "Initialize: " + res + " | completion_status: " + completion + " | success_status: " + success;
+      } else {
+        logEl.innerText = "SCORM 2004 API_1484_11 adapter not detected in hierarchy.";
+      }
+    }
+
+    function complete2004SCO() {
+      var logEl = document.getElementById('scorm2004Log');
+      if (!api2004) {
+        alert("Simulated Completion: 2004 Runtime passed.");
+        return;
+      }
+      api2004.SetValue("cmi.completion_status", "completed");
+      api2004.SetValue("cmi.success_status", "passed");
+      api2004.SetValue("cmi.score.scaled", "0.95");
+      api2004.SetValue("cmi.score.raw", "95");
+      api2004.SetValue("cmi.session_time", "PT5M12S");
+      api2004.Commit("");
+      logEl.innerText = "cmi.completion_status: completed | cmi.success_status: passed | cmi.score.scaled: 0.95 | Commit: OK";
+      alert("SCORM 2004 objective recorded as PASSED (95%).");
+    }
+
+    window.onload = initSCORM2004;
+    window.onunload = function() {
+      if (api2004) {
+        api2004.Terminate("");
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+client/node_modules/
+
+# Production build outputs
+client/dist/
+
+# Local Environment Variables
+.env
+client/.env
+
+# Temporary upload directories
+server/uploads-tmp/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.gemini/

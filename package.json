@@ -1,0 +1,37 @@
+{
+  "name": "strata-lxp",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "server": "node server/index.js",
+    "client": "npm --prefix client run dev",
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"blue,green\" \"node server/index.js\" \"npm --prefix client run dev\"",
+    "build": "npm --prefix client run build",
+    "seed": "node server/db/seed.js",
+    "start": "node server/index.js"
+  },
+  "keywords": [
+    "lms",
+    "lxp",
+    "learning-management-system",
+    "scorm",
+    "ai-course-creator"
+  ],
+  "author": "Strata Learning Technologies",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
+    "adm-zip": "^0.6.0",
+    "bcryptjs": "^3.0.3",
+    "concurrently": "^10.0.5",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.3.0",
+    "sql.js": "^1.14.2",
+    "uuid": "^14.0.2",
+    "xml2js": "^0.6.2"
+  }
+}

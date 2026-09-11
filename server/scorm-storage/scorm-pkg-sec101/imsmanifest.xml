@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="no" ?>
+<manifest identifier="STRATA_SCORM_12_SEC101" version="1.2"
+          xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
+          xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata>
+    <schema>ADL SCORM</schema>
+    <schemaversion>1.2</schemaversion>
+  </metadata>
+  <organizations default="STRATA_ORG_1">
+    <organization identifier="STRATA_ORG_1">
+      <title>Enterprise Information Security &amp; Zero Trust Architecture</title>
+      <item identifier="ITEM_1" identifierref="RES_1">
+        <title>Zero Trust Architecture &amp; Identity Verification</title>
+      </item>
+    </organization>
+  </organizations>
+  <resources>
+    <resource identifier="RES_1" type="webcontent" adlcp:scormtype="sco" href="index.html">
+      <file href="index.html"/>
+    </resource>
+  </resources>
+</manifest>
